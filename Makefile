@@ -18,7 +18,7 @@ OPENMP_LIB ?= 1
 
 all: pgd
 
-CFLAGS = -O3 
+CFLAGS = -O3
 
 ifeq ($(OPENMP_LIB),1)
         CFLAGS += -fopenmp
@@ -31,7 +31,7 @@ CFLAGS += -ffast-math -funroll-loops -fno-strict-aliasing \
 	 -fomit-frame-pointer -fexpensive-optimizations -funroll-loops \
 	 -fmove-loop-invariants -fprefetch-loop-arrays -ftree-loop-optimize \
 	 -ftree-vect-loop-version -ftree-vectorize
-CXX          = g++
+CXX          = g++-7
 
 
 H_FILES     = graphlet.h
@@ -44,19 +44,19 @@ GRAPHLET_MAIN		= graphlet_driver.cpp
 OBJ_GRAPHLET	= $(GRAPHLET_MAIN:%.cpp=%.o) $(IO_SRC)
 $(OBJ_GRAPHLET): $(H_FILES) Makefile
 pgd: $(OBJ_GRAPHLET) $(H_FILES)
-	$(CXX) $(CFLAGS) -o pgd $(OBJ_GRAPHLET)	
+	$(CXX) $(CFLAGS) -o pgd $(OBJ_GRAPHLET)
 
-	
+
 test:
 	./pgd -f sample_graph.csv
-	
+
 test-4-clique:
 	./pgd -f data/4-clique.txt --micro data/4-clique.edges
 
 test-4-chordal-cycle:
 	./pgd -f data/4-chordal-cycle.txt --micro data/4-chordal-cycle.txt
-	
-help:  
+
+help:
 	@echo " "
 	@echo "Operating System Detected: $(OPSYS) "
 	@echo " "
@@ -84,7 +84,7 @@ docs:
 	brew install doxygen # try to install doxygen if not installed (mac osx only)
 	brew install graphviz
 	doxygen Doxyfile
-	
+
 cleandoc:
 	@echo "Removing 'docs' directory"
 	rm -r docs
@@ -102,17 +102,17 @@ tar:
 	make clean; cd ../;  tar cvzf $(DL_DIR)/$(DL_SRC_DIR)/pgd_$(TIME).tgz pgd/
 	make clean; cd ../;  zip -r $(DL_DIR)/$(DL_SRC_DIR)/pgd_$(TIME).zip pgd/
 	make clean; cd ../;  7z a $(DL_DIR)/$(DL_SRC_DIR)/pgd_$(TIME).7z pgd/
-	
+
 tar-full: # src code AND data
 	make clean; cd ../;  tar cvzf $(DL_DIR)/$(DL_FULL_DIR)/pgd_full_`date +%Y-%m-%d_%H-%M`.tgz pgd/ data/
 	make clean; cd ../;  zip -r $(DL_DIR)/$(DL_FULL_DIR)/pgd_full_`date +%Y-%m-%d_%H-%M`.zip pgd/ data/
 	make clean; cd ../;  7z a $(DL_DIR)/$(DL_FULL_DIR)/pgd_full_`date +%Y-%m-%d_%H-%M`.7z pgd/ data/
-	
-tar-exec: 
+
+tar-exec:
 	make clean; cd ../;  tar cvzf $(DL_DIR)/$(DL_EXEC_DIR)/pgd_exec_`date +%Y-%m-%d_%H-%M`.tgz pgd
 	make clean; cd ../;  zip -r $(DL_DIR)/$(DL_EXEC_DIR)/pgd_exec_`date +%Y-%m-%d_%H-%M`.zip pgd
 	make clean; cd ../;  7z a $(DL_DIR)/$(DL_EXEC_DIR)/pgd_exec_`date +%Y-%m-%d_%H-%M`.7z pgd
-	
+
 clean:
 	@echo "Removing *.o and executable files"
 	rm -rf *.o pgd
